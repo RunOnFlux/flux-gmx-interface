@@ -1,20 +1,16 @@
-import { FALLBACK_PROVIDERS, RPC_PROVIDERS } from "config/chains";
-import _ from "lodash";
+import { useEffect, useState } from "react";
+import { FALLBACK_PROVIDERS, getFallbackRpcUrl, getRpcUrl } from "config/chains";
 import { ethers } from "ethers";
-import { Web3ReactContextInterface } from "@web3-react/core/dist/types";
-import { JsonRpcProvider } from "@ethersproject/providers";
+import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 
-export function getProvider(
-  library: Web3ReactContextInterface["library"] | undefined,
-  chainId: number
-): JsonRpcProvider {
+export function getProvider(library: Web3Provider | undefined, chainId: number) {
   let provider;
 
   if (library) {
     return library.getSigner();
   }
 
-  provider = _.sample(RPC_PROVIDERS[chainId]);
+  provider = getRpcUrl(chainId);
 
   return new ethers.providers.StaticJsonRpcProvider(
     provider,
@@ -28,11 +24,33 @@ export function getFallbackProvider(chainId: number) {
     return;
   }
 
-  const provider = _.sample(FALLBACK_PROVIDERS[chainId]);
+  const provider = getFallbackRpcUrl(chainId);
 
   return new ethers.providers.StaticJsonRpcProvider(
     provider,
     // @ts-ignore incorrect Network param types
     { chainId }
   );
+}
+
+export function useJsonRpcProvider(chainId: number) {
+  const [provider, setProvider] = useState<JsonRpcProvider>();
+
+  useEffect(() => {
+    async function initializeProvider() {
+      const rpcUrl = getRpcUrl(chainId);
+
+      if (!rpcUrl) return;
+
+      const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+
+      await provider.ready;
+
+      setProvider(provider);
+    }
+
+    initializeProvider();
+  }, [chainId]);
+
+  return { provider };
 }

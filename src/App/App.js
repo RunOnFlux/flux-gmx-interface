@@ -93,6 +93,7 @@ import {
   hasCoinBaseWalletExtension,
   hasMetaMaskWalletExtension,
   useEagerConnect,
+  useHandleUnsupportedNetwork,
   useInactiveListener,
 } from "lib/wallets";
 import { useChainId } from "lib/chains";
@@ -119,6 +120,7 @@ const Zoom = cssTransition({
 const arbWsProvider = new ethers.providers.WebSocketProvider(getAlchemyWsUrl());
 
 const avaxWsProvider = new ethers.providers.JsonRpcProvider("https://api.avax.network/ext/bc/C/rpc");
+avaxWsProvider.pollingInterval = 2000;
 
 function getWsProvider(active, chainId) {
   if (!active) {
@@ -149,6 +151,8 @@ function FullApp() {
   }, [activatingConnector, connector, chainId]);
   const triedEager = useEagerConnect(setActivatingConnector);
   useInactiveListener(!triedEager || !!activatingConnector);
+
+  useHandleUnsupportedNetwork();
 
   const query = useRouteQuery();
 
@@ -189,7 +193,7 @@ function FullApp() {
     setIsSettingsVisible(false);
   };
 
-  const connectInjectedWallet = getInjectedHandler(activate);
+  const connectInjectedWallet = getInjectedHandler(activate, deactivate);
   const activateWalletConnect = () => {
     getWalletConnectHandler(activate, deactivate, setActivatingConnector)();
   };
@@ -254,8 +258,7 @@ function FullApp() {
   const [walletModalVisible, setWalletModalVisible] = useState(false);
   const [redirectModalVisible, setRedirectModalVisible] = useState(false);
   const [shouldHideRedirectModal, setShouldHideRedirectModal] = useState(false);
-  const [redirectPopupTimestamp, setRedirectPopupTimestamp, removeRedirectPopupTimestamp] =
-    useLocalStorage(REDIRECT_POPUP_TIMESTAMP_KEY);
+  const [redirectPopupTimestamp, setRedirectPopupTimestamp] = useLocalStorage(REDIRECT_POPUP_TIMESTAMP_KEY);
   const [selectedToPage, setSelectedToPage] = useState("");
   const connectWallet = () => setWalletModalVisible(true);
 
@@ -562,7 +565,6 @@ function FullApp() {
         setRedirectPopupTimestamp={setRedirectPopupTimestamp}
         setShouldHideRedirectModal={setShouldHideRedirectModal}
         shouldHideRedirectModal={shouldHideRedirectModal}
-        removeRedirectPopupTimestamp={removeRedirectPopupTimestamp}
       />
       <Modal
         className="Connect-wallet-modal"

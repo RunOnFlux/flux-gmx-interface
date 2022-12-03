@@ -24,6 +24,8 @@ import {
   getNextToAmount,
   USDG_DECIMALS,
   adjustForDecimals,
+  isAddressZero,
+  MAX_ALLOWED_LEVERAGE,
 } from "lib/legacy";
 import { ARBITRUM, getChainName, getConstant, IS_NETWORK_DISABLED } from "config/chains";
 import { createDecreaseOrder, useHasOutdatedUi } from "domain/legacy";
@@ -45,7 +47,7 @@ import { CLOSE_POSITION_RECEIVE_TOKEN_KEY, SLIPPAGE_BPS_KEY } from "config/local
 import { getTokenInfo, getUsd } from "domain/tokens/utils";
 import { usePrevious } from "lib/usePrevious";
 import { bigNumberify, expandDecimals, formatAmount, formatAmountFree, parseValue } from "lib/numbers";
-import { getTokens } from "config/tokens";
+import { getTokens, getWrappedToken } from "config/tokens";
 import { formatDateTime, getTimeRemaining } from "lib/dates";
 import ExternalLink from "components/ExternalLink/ExternalLink";
 
@@ -138,6 +140,7 @@ export default function PositionSeller(props) {
     minExecutionFeeErrorMessage,
     usdgSupply,
     totalTokenWeights,
+    isContractAccount,
   } = props;
   const [savedSlippageAmount] = useLocalStorageSerializeKey([chainId, SLIPPAGE_BPS_KEY], DEFAULT_SLIPPAGE_AMOUNT);
   const [keepLeverage, setKeepLeverage] = useLocalStorageSerializeKey([chainId, "Exchange-keep-leverage"], true);
@@ -148,12 +151,14 @@ export default function PositionSeller(props) {
   const prevIsVisible = usePrevious(isVisible);
   const positionRouterAddress = getContract(chainId, "PositionRouter");
   const nativeTokenSymbol = getConstant(chainId, "nativeTokenSymbol");
-  const toTokens = getTokens(chainId);
   const longOrShortText = position?.isLong ? t`Long` : t`Short`;
+
+  const toTokens = isContractAccount ? getTokens(chainId).filter((t) => !t.isNative) : getTokens(chainId);
+  const wrappedToken = getWrappedToken(chainId);
 
   const [savedRecieveTokenAddress, setSavedRecieveTokenAddress] = useLocalStorageByChainId(
     chainId,
-    `${CLOSE_POSITION_RECEIVE_TOKEN_KEY}-${position?.indexToken?.symbol}-${position.isLong ? "long" : "short"}`
+    `${CLOSE_POSITION_RECEIVE_TOKEN_KEY}-${position.indexToken.symbol}-${position?.isLong ? "long" : "short"}`
   );
 
   const [swapToToken, setSwapToToken] = useState(() =>
@@ -276,6 +281,20 @@ export default function PositionSeller(props) {
   let swapFee;
   let totalFees = bigNumberify(0);
 
+  useEffect(() => {
+    if (isSwapAllowed && isContractAccount && isAddressZero(receiveToken.address)) {
+      setSwapToToken(wrappedToken);
+      setSavedRecieveTokenAddress(wrappedToken.address);
+    }
+  }, [
+    isContractAccount,
+    isSwapAllowed,
+    nativeTokenSymbol,
+    receiveToken?.address,
+    wrappedToken,
+    setSavedRecieveTokenAddress,
+  ]);
+
   let executionFee = orderOption === STOP ? getConstant(chainId, "DECREASE_ORDER_EXECUTION_GAS_FEE") : minExecutionFee;
 
   let executionFeeUsd = getUsd(executionFee, nativeTokenAddress, false, infoTokens) || bigNumberify(0);
@@ -307,7 +326,7 @@ export default function PositionSeller(props) {
       }
     }
 
-    if (sizeDelta) {
+    if (sizeDelta && position.size.gt(0)) {
       adjustedDelta = nextDelta.mul(sizeDelta).div(position.size);
     }
 
@@ -357,6 +376,10 @@ export default function PositionSeller(props) {
 
     receiveToken = isSwapAllowed && swapToToken ? swapToToken : collateralToken;
 
+    if (isSwapAllowed && isContractAccount && isAddressZero(receiveToken.address)) {
+      receiveToken = wrappedToken;
+    }
+
     // Calculate swap fees
     if (isSwapAllowed && swapToToken) {
       const { feeBasisPoints } = getNextToAmount(
@@ -380,7 +403,8 @@ export default function PositionSeller(props) {
       }
     }
 
-    if (orderOption === STOP) {
+    // For Shorts trigger orders the collateral is a stable coin, it should not depend on the triggerPrice
+    if (orderOption === STOP && position.isLong) {
       convertedReceiveAmount = getTokenAmountFromUsd(infoTokens, receiveToken.address, receiveAmount, {
         overridePrice: triggerPriceUsd,
       });
@@ -456,7 +480,7 @@ export default function PositionSeller(props) {
   }
 
   const [deltaStr, deltaPercentageStr] = useMemo(() => {
-    if (!position || !position.markPrice) {
+    if (!position || !position.markPrice || position.collateral.eq(0)) {
       return ["-", "-"];
     }
     if (orderOption !== STOP) {
@@ -491,6 +515,9 @@ export default function PositionSeller(props) {
   }, [position, triggerPriceUsd, orderOption, fromAmount]);
 
   const getError = () => {
+    if (isSwapAllowed && isContractAccount && isAddressZero(receiveToken?.address)) {
+      return t`${nativeTokenSymbol} can not be sent to smart contract addresses. Select another token.`;
+    }
     if (IS_NETWORK_DISABLED[chainId]) {
       if (orderOption === STOP) return [t`Trigger order disabled, pending ${getChainName(chainId)} upgrade`];
       return [t`Position close disabled, pending ${getChainName(chainId)} upgrade`];
@@ -545,8 +572,8 @@ export default function PositionSeller(props) {
       return t`Min leverage: 1.1x`;
     }
 
-    if (nextLeverage && nextLeverage.gt(30.5 * BASIS_POINTS_DIVISOR)) {
-      return t`Max leverage: 30.5xt`;
+    if (nextLeverage && nextLeverage.gt(MAX_ALLOWED_LEVERAGE)) {
+      return t`Max leverage: ${(MAX_ALLOWED_LEVERAGE / BASIS_POINTS_DIVISOR).toFixed(1)}x`;
     }
 
     if (hasPendingProfit && orderOption !== STOP && !isProfitWarningAccepted) {
@@ -711,7 +738,7 @@ export default function PositionSeller(props) {
       }
     }
 
-    const withdrawETH = isUnwrap;
+    const withdrawETH = isUnwrap && !isContractAccount;
 
     const params = [
       path, // _path
@@ -834,6 +861,11 @@ export default function PositionSeller(props) {
   }
 
   const shouldShowExistingOrderWarning = false;
+
+  if (orderOption === STOP && !triggerPriceUsd) {
+    receiveAmount = bigNumberify(0);
+    convertedReceiveAmount = bigNumberify(0);
+  }
 
   return (
     <div className="PositionEditor">
@@ -1160,7 +1192,8 @@ export default function PositionSeller(props) {
 
               {!isSwapAllowed && receiveToken && (
                 <div className="align-right PositionSelector-selected-receive-token">
-                  {formatAmount(convertedReceiveAmount, receiveToken.decimals, 4, true)}&nbsp;{receiveToken.symbol} ($
+                  {formatAmount(convertedReceiveAmount, receiveToken.decimals, 4, true)}
+                  &nbsp;{receiveToken.symbol} ($
                   {formatAmount(receiveAmount, USD_DECIMALS, 2, true)})
                 </div>
               )}
