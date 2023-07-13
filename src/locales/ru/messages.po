@@ -245,8 +245,8 @@ msgid "An aggregate of high-quality price feeds determine when liquidations occu
 msgstr "Совокупность высококачественных ценовых сигналов определяет, когда происходит ликвидация. Это позволяет обезопасить позиции от временных колебаний."
 
 #: src/pages/Ecosystem/Ecosystem.js
-msgid "Announcement"
-msgstr "Объявление"
+#~ msgid "Announcement"
+#~ msgstr "Объявление"
 
 #: src/components/Header/HomeHeaderLinks.tsx
 msgid "App"
@@ -723,6 +723,7 @@ msgid "Community-led Telegram groups."
 msgstr "Группы Telegram под руководством сообщества."
 
 #: src/pages/CompleteAccountTransfer/CompleteAccountTransfer.js
+#: src/pages/CompleteAccountTransfer/CompleteAccountTransfer.js
 msgid "Complete Account Transfer"
 msgstr "Завершить Перевод по Счету"
 
@@ -918,6 +919,7 @@ msgstr "Текущий {0} Шорт"
 #: src/pages/Ecosystem/Ecosystem.js
 #: src/pages/Ecosystem/Ecosystem.js
 #: src/pages/Ecosystem/Ecosystem.js
+#: src/pages/Ecosystem/Ecosystem.js
 msgid "DEX Aggregator"
 msgstr "Агрегатор DEX"
 
@@ -950,6 +952,10 @@ msgstr "Дец."
 #: src/pages/Ecosystem/Ecosystem.js
 msgid "Decentralized Finance Dashboard"
 msgstr "Децентрализованная Финансовая Панель"
+
+#: src/pages/Ecosystem/Ecosystem.js
+msgid "Decentralized Money Market"
+msgstr ""
 
 #: src/pages/Ecosystem/Ecosystem.js
 msgid "Decentralized Options Protocol"
@@ -1493,6 +1499,10 @@ msgid "GMX staking calculator"
 msgstr "Калькулятор ставки GMX"
 
 #: src/pages/Ecosystem/Ecosystem.js
+msgid "GMX staking calculator and guide"
+msgstr ""
+
+#: src/pages/Ecosystem/Ecosystem.js
 msgid "GMX staking rewards updates and insights"
 msgstr "Обновления и информация о вознаграждениях за ставку GMX"
 
@@ -1656,6 +1666,10 @@ msgstr "Неверный получатель"
 #: src/pages/NftWallet/NftWallet.js
 msgid "Invalid Receiver Address"
 msgstr "Неверный адрес получателя"
+
+#: src/pages/CompleteAccountTransfer/CompleteAccountTransfer.js
+msgid "Invalid Transfer Addresses: Please check the url."
+msgstr ""
 
 #: src/components/Exchange/PositionEditor.js
 #: src/components/Exchange/PositionEditor.js
@@ -2542,6 +2556,10 @@ msgstr ""
 #: src/pages/Ecosystem/Ecosystem.js
 msgid "Protocol analytics"
 msgstr "Аналитика протоколов"
+
+#: src/pages/Ecosystem/Ecosystem.js
+msgid "Protocol risk explorer and stats"
+msgstr ""
 
 #: src/pages/BuyGlp/BuyGlp.js
 msgid "Purchase <0>GLP tokens</0> to earn {nativeTokenSymbol} fees from swaps and leverages trading."
@@ -3853,6 +3871,10 @@ msgid "Yield Optimizer on Avalanche"
 msgstr "Оптимизатор доходности xранилища на Avalanche"
 
 #: src/pages/Ecosystem/Ecosystem.js
+msgid "Yield Trading"
+msgstr ""
+
+#: src/pages/Ecosystem/Ecosystem.js
 msgid "Yield Vaults"
 msgstr "Доходные Хранилища"
 
@@ -3988,6 +4010,10 @@ msgstr "счёт"
 #: src/pages/PositionsOverview/PositionsOverview.js
 msgid "collateral"
 msgstr "залог"
+
+#: src/pages/Ecosystem/Ecosystem.js
+msgid "esGMX OTC Market"
+msgstr ""
 
 #: src/pages/PositionsOverview/PositionsOverview.js
 msgid "fee"

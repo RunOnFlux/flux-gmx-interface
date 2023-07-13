@@ -245,8 +245,8 @@ msgid "An aggregate of high-quality price feeds determine when liquidations occu
 msgstr "清算が発生した時点で高品質の価格フィードの集成価格が確定します。これによりポジションは一時的変動から守られます。"
 
 #: src/pages/Ecosystem/Ecosystem.js
-msgid "Announcement"
-msgstr "告知"
+#~ msgid "Announcement"
+#~ msgstr "告知"
 
 #: src/components/Header/HomeHeaderLinks.tsx
 msgid "App"
@@ -723,6 +723,7 @@ msgid "Community-led Telegram groups."
 msgstr "コミュニティ主導のTelegramグループ"
 
 #: src/pages/CompleteAccountTransfer/CompleteAccountTransfer.js
+#: src/pages/CompleteAccountTransfer/CompleteAccountTransfer.js
 msgid "Complete Account Transfer"
 msgstr "アカウント移転を完了させる"
 
@@ -918,6 +919,7 @@ msgstr "現在の{0}のショート"
 #: src/pages/Ecosystem/Ecosystem.js
 #: src/pages/Ecosystem/Ecosystem.js
 #: src/pages/Ecosystem/Ecosystem.js
+#: src/pages/Ecosystem/Ecosystem.js
 msgid "DEX Aggregator"
 msgstr "DEXアグリゲーター"
 
@@ -950,6 +952,10 @@ msgstr "12月"
 #: src/pages/Ecosystem/Ecosystem.js
 msgid "Decentralized Finance Dashboard"
 msgstr "DeFiダッシュボード"
+
+#: src/pages/Ecosystem/Ecosystem.js
+msgid "Decentralized Money Market"
+msgstr ""
 
 #: src/pages/Ecosystem/Ecosystem.js
 msgid "Decentralized Options Protocol"
@@ -1493,6 +1499,10 @@ msgid "GMX staking calculator"
 msgstr "GMXステーキング計算機"
 
 #: src/pages/Ecosystem/Ecosystem.js
+msgid "GMX staking calculator and guide"
+msgstr ""
+
+#: src/pages/Ecosystem/Ecosystem.js
 msgid "GMX staking rewards updates and insights"
 msgstr "GMXステーキング報酬の最新情報および見通し"
 
@@ -1656,6 +1666,10 @@ msgstr "無効な受け取り人"
 #: src/pages/NftWallet/NftWallet.js
 msgid "Invalid Receiver Address"
 msgstr "無効な受け取りアドレス"
+
+#: src/pages/CompleteAccountTransfer/CompleteAccountTransfer.js
+msgid "Invalid Transfer Addresses: Please check the url."
+msgstr ""
 
 #: src/components/Exchange/PositionEditor.js
 #: src/components/Exchange/PositionEditor.js
@@ -2542,6 +2556,10 @@ msgstr ""
 #: src/pages/Ecosystem/Ecosystem.js
 msgid "Protocol analytics"
 msgstr "プロトコルの分析"
+
+#: src/pages/Ecosystem/Ecosystem.js
+msgid "Protocol risk explorer and stats"
+msgstr ""
 
 #: src/pages/BuyGlp/BuyGlp.js
 msgid "Purchase <0>GLP tokens</0> to earn {nativeTokenSymbol} fees from swaps and leverages trading."
@@ -3853,6 +3871,10 @@ msgid "Yield Optimizer on Avalanche"
 msgstr "Avalanche上のイールドオプティマイザー"
 
 #: src/pages/Ecosystem/Ecosystem.js
+msgid "Yield Trading"
+msgstr ""
+
+#: src/pages/Ecosystem/Ecosystem.js
 msgid "Yield Vaults"
 msgstr "イールドボールト"
 
@@ -3988,6 +4010,10 @@ msgstr "アカウント"
 #: src/pages/PositionsOverview/PositionsOverview.js
 msgid "collateral"
 msgstr "担保"
+
+#: src/pages/Ecosystem/Ecosystem.js
+msgid "esGMX OTC Market"
+msgstr ""
 
 #: src/pages/PositionsOverview/PositionsOverview.js
 msgid "fee"

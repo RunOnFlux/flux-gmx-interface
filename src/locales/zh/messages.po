@@ -245,8 +245,8 @@ msgid "An aggregate of high-quality price feeds determine when liquidations occu
 msgstr "高质量价格供给的总和决定了清算时间。使头寸不受暂时波动的影响"
 
 #: src/pages/Ecosystem/Ecosystem.js
-msgid "Announcement"
-msgstr "公告"
+#~ msgid "Announcement"
+#~ msgstr "公告"
 
 #: src/components/Header/HomeHeaderLinks.tsx
 msgid "App"
@@ -723,6 +723,7 @@ msgid "Community-led Telegram groups."
 msgstr "社区主导的Telegram群组"
 
 #: src/pages/CompleteAccountTransfer/CompleteAccountTransfer.js
+#: src/pages/CompleteAccountTransfer/CompleteAccountTransfer.js
 msgid "Complete Account Transfer"
 msgstr "完成账户转移"
 
@@ -918,6 +919,7 @@ msgstr "目前 {0} 空"
 #: src/pages/Ecosystem/Ecosystem.js
 #: src/pages/Ecosystem/Ecosystem.js
 #: src/pages/Ecosystem/Ecosystem.js
+#: src/pages/Ecosystem/Ecosystem.js
 msgid "DEX Aggregator"
 msgstr "DEX 聚合器"
 
@@ -950,6 +952,10 @@ msgstr "Dec"
 #: src/pages/Ecosystem/Ecosystem.js
 msgid "Decentralized Finance Dashboard"
 msgstr "去中心化金融仪表板"
+
+#: src/pages/Ecosystem/Ecosystem.js
+msgid "Decentralized Money Market"
+msgstr ""
 
 #: src/pages/Ecosystem/Ecosystem.js
 msgid "Decentralized Options Protocol"
@@ -1493,6 +1499,10 @@ msgid "GMX staking calculator"
 msgstr "GMX质押计算器"
 
 #: src/pages/Ecosystem/Ecosystem.js
+msgid "GMX staking calculator and guide"
+msgstr ""
+
+#: src/pages/Ecosystem/Ecosystem.js
 msgid "GMX staking rewards updates and insights"
 msgstr "GMX质押奖励更新和详解"
 
@@ -1656,6 +1666,10 @@ msgstr "无效的接收者"
 #: src/pages/NftWallet/NftWallet.js
 msgid "Invalid Receiver Address"
 msgstr "无效的接收地址"
+
+#: src/pages/CompleteAccountTransfer/CompleteAccountTransfer.js
+msgid "Invalid Transfer Addresses: Please check the url."
+msgstr ""
 
 #: src/components/Exchange/PositionEditor.js
 #: src/components/Exchange/PositionEditor.js
@@ -2542,6 +2556,10 @@ msgstr ""
 #: src/pages/Ecosystem/Ecosystem.js
 msgid "Protocol analytics"
 msgstr "协议分析"
+
+#: src/pages/Ecosystem/Ecosystem.js
+msgid "Protocol risk explorer and stats"
+msgstr ""
 
 #: src/pages/BuyGlp/BuyGlp.js
 msgid "Purchase <0>GLP tokens</0> to earn {nativeTokenSymbol} fees from swaps and leverages trading."
@@ -3853,6 +3871,10 @@ msgid "Yield Optimizer on Avalanche"
 msgstr "Avalanche上的产量优化器"
 
 #: src/pages/Ecosystem/Ecosystem.js
+msgid "Yield Trading"
+msgstr ""
+
+#: src/pages/Ecosystem/Ecosystem.js
 msgid "Yield Vaults"
 msgstr "产量库"
 
@@ -3988,6 +4010,10 @@ msgstr "帐户"
 #: src/pages/PositionsOverview/PositionsOverview.js
 msgid "collateral"
 msgstr "抵押品"
+
+#: src/pages/Ecosystem/Ecosystem.js
+msgid "esGMX OTC Market"
+msgstr ""
 
 #: src/pages/PositionsOverview/PositionsOverview.js
 msgid "fee"
